@@ -52,101 +52,100 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    data () {
-      return {
-        simple: {
-          "channelName":"mychannel",
-          "peers":["peer0.org1.example.com","peer1.org1.example.com"]
-        },
-        modal: false,
-        peerName: '',
-        hidden: true,
-        modal_loading: false,
-        result: '',
-        channelFrom: {
-          channelName: '',
-          peers: []
-        },
-        ruleValidate: {
-          channelName: [
-            {
-              required: true,
-              message: '通道名称不能为空',
-              trigger: 'blur'
-            },
-            {
-              type: 'string',
-              max: 50,
-              message: '不能超过50个字符',
-              trigger: 'blur'
-            }
-          ],
-          peers: [
-            {
-              required: true,
-              message: '节点名称不能为空',
-              trigger: 'blur'
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      ...mapActions([
-        'createChannel'
-      ]),
-      ok () {
-        this.channelFrom.peers.push(this.peerName)
-        this.peerName = ''
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      simple: {
+        'channelName': 'mychannel',
+        'peers': ['peer0.org1.example.com', 'peer1.org1.example.com']
       },
-      cancel () {
-        this.peerName = ''
+      modal: false,
+      peerName: '',
+      hidden: true,
+      modal_loading: false,
+      result: '',
+      channelFrom: {
+        channelName: '',
+        peers: []
       },
-      handleAdd () {
-        this.modal = true
-      },
-      handleClose(event, name) {
-        const index = this.channelFrom.peers.indexOf(name);
-        this.channelFrom.peers.splice(index, 1);
-      },
-      handleReset(name) {
-        this.$refs[name].resetFields()
-      },
-      handleSubmit(name) {
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            this.modal_loading = true
-            var params = {}
-            params.channelName = this.channelFrom.channelName
-            params.peers = this.channelFrom.peers
-            this.createChannel(params).then(res => {
-              console.log(res)
-              if (res.success === true) {
-                this.$Message.success('Build Success!')
-                setTimeout(() => {
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                }, 1000)
-              } else {
-                this.$Message.error(res.message)
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                }, 1000)
-              }
-            })
-          } else {
-            this.$Message.error('Fail!')
+      ruleValidate: {
+        channelName: [
+          {
+            required: true,
+            message: '通道名称不能为空',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            max: 50,
+            message: '不能超过50个字符',
+            trigger: 'blur'
           }
-        })
+        ],
+        peers: [
+          {
+            required: true,
+            message: '节点名称不能为空',
+            trigger: 'blur'
+          }
+        ]
       }
     }
+  },
+  methods: {
+    ...mapActions([
+      'createChannel'
+    ]),
+    ok () {
+      this.channelFrom.peers.push(this.peerName)
+      this.peerName = ''
+    },
+    cancel () {
+      this.peerName = ''
+    },
+    handleAdd () {
+      this.modal = true
+    },
+    handleClose (event, name) {
+      const index = this.channelFrom.peers.indexOf(name)
+      this.channelFrom.peers.splice(index, 1)
+    },
+    handleReset (name) {
+      this.$refs[name].resetFields()
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.modal_loading = true
+          var params = {}
+          params.channelName = this.channelFrom.channelName
+          params.peers = this.channelFrom.peers
+          this.createChannel(params).then(res => {
+            console.log(res)
+            if (res.success === true) {
+              this.$Message.success('Build Success!')
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            } else {
+              this.$Message.error(res.message)
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            }
+          })
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    }
   }
+}
 </script>
 
 <style>

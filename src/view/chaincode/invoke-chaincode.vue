@@ -67,117 +67,114 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    data () {
-      return {
-        simple: {
-          "channelName": "mychannel",
-          "chaincodeName": "mycc",
-          "fcn": "move",
-          "args": ["a", "b", "10"]
-        },
-        modal: false,
-        arg: '',
-        modal_loading: false,
-        hidden: true,
-        result: '',
-        channelFrom: {
-          channelName: '',
-          chaincodeName: '',
-          peer: '',
-          fcn: '',
-          args: []
-        },
-        ruleValidate: {
-          channelName: [
-            {
-              required: true,
-              message: '通道名称不能为空',
-              trigger: 'blur'
-            },
-            {
-              type: 'string',
-              max: 50,
-              message: '不能超过50个字符',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeName: [
-            {
-              required: true,
-              message: '合约名称不能为空',
-              trigger: 'blur'
-            }
-          ],
-          fcn: [
-            {
-              required: true,
-              message: '通道文件所在路径不能为空',
-              trigger: 'blur'
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      ...mapActions([
-        'invoke'
-      ]),
-      ok () {
-        this.channelFrom.args.push(this.arg)
-        this.arg = ''
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      simple: {
+        'channelName': 'mychannel',
+        'chaincodeName': 'mycc',
+        'fcn': 'move',
+        'args': ['a', 'b', '10']
       },
-      cancel () {
-        this.arg = ''
+      modal: false,
+      arg: '',
+      modal_loading: false,
+      hidden: true,
+      result: '',
+      channelFrom: {
+        channelName: '',
+        chaincodeName: '',
+        peer: '',
+        fcn: '',
+        args: []
       },
-      handleAdd () {
-        this.modal = true
-      },
-      handleClose(event, name) {
-        const index = this.channelFrom.args.indexOf(name);
-        this.channelFrom.args.splice(index, 1);
-      },
-      handleReset (name) {
-        this.$refs[name].resetFields()
-      },
-      handleSubmit (name) {
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            this.modal_loading = true
-            var params = {}
-            params.channelName = this.channelFrom.channelName
-            params.chaincodeName = this.channelFrom.chaincodeName
-            params.fcn = this.channelFrom.fcn
-            params.args = this.channelFrom.args
-            this.invoke(params).then(res => {
-              console.log(res)
-              if (res.result === true) {
-                this.$Message.success('Build Success!')
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                  // this.getAllCompanies()
-                }, 1000)
-              } else {
-                this.$Message.error(res.message)
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                }, 1000)
-              }
-            })
-          } else {
-            this.$Message.error('Fail!')
+      ruleValidate: {
+        channelName: [
+          {
+            required: true,
+            message: '通道名称不能为空',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            max: 50,
+            message: '不能超过50个字符',
+            trigger: 'blur'
           }
-        })
+        ],
+        chaincodeName: [
+          {
+            required: true,
+            message: '合约名称不能为空',
+            trigger: 'blur'
+          }
+        ],
+        fcn: [
+          {
+            required: true,
+            message: '通道文件所在路径不能为空',
+            trigger: 'blur'
+          }
+        ]
       }
     }
+  },
+  methods: {
+    ...mapActions([
+      'invoke'
+    ]),
+    ok () {
+      this.channelFrom.args.push(this.arg)
+      this.arg = ''
+    },
+    cancel () {
+      this.arg = ''
+    },
+    handleAdd () {
+      this.modal = true
+    },
+    handleClose (event, name) {
+      const index = this.channelFrom.args.indexOf(name)
+      this.channelFrom.args.splice(index, 1)
+    },
+    handleReset (name) {
+      this.$refs[name].resetFields()
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.modal_loading = true
+          var params = {}
+          params.channelName = this.channelFrom.channelName
+          params.chaincodeName = this.channelFrom.chaincodeName
+          params.fcn = this.channelFrom.fcn
+          params.args = this.channelFrom.args
+          this.invoke(params).then(res => {
+            console.log(res)
+            if (res.result === true) {
+              this.$Message.success('Build Success!')
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            } else {
+              this.$Message.error(res.message)
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            }
+          })
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    }
   }
+}
 </script>
 
 <style>

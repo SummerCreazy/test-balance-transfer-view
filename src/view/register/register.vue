@@ -24,62 +24,62 @@
 </template>
 
 <script>
-  import RegisterForm from '_c/register-form'
-  import { mapActions } from 'vuex'
-  export default {
-    data () {
-      return {
-        langList: {
-          'ja_JP': '言語',
-          'en_US': 'Lang',
-          'zh_CN': '语言'
-        },
-        localList: {
-          'ja_JP': '日本語',
-          'en_US': 'English',
-          'zh_CN': '中文简体'
-        },
-        title: 'language',
-        languageType: 'Default(中文简体)'
-      }
-    },
-    components: {
-      RegisterForm,
-      init () {
-        this.$i18n.locale = 'zh_CN'
-      }
-    },
-    methods: {
-      ...mapActions([
-        'register'
-      ]),
-      handleSubmit ({ username, orgName}) {
-        this.register({ username, orgName}).then(res => {
-          if(res.success === true){
-            this.$Message.success(res.message)
-            this.$router.push({
-              name: 'home'
-            })
-          }else{
-            this.$Message.error(res.message)
-          }
-        })
+import RegisterForm from '_c/register-form'
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      langList: {
+        'ja_JP': '言語',
+        'en_US': 'Lang',
+        'zh_CN': '语言'
       },
-      selectLang (name) {
-        this.title = this.langList[name]
-        this.languageType = this.localList[name]
-        this.$i18n.locale = name
-        if (name === 'zh_CN') {
-          this.$Message.success('部分元素需要页面刷新后改变语言，但不影响使用。')
-        } else if (name === 'ja_JP') {
-          this.$Message.success('部分元素需要页面刷新后改变语言，但不影响使用。')
+      localList: {
+        'ja_JP': '日本語',
+        'en_US': 'English',
+        'zh_CN': '中文简体'
+      },
+      title: 'language',
+      languageType: 'Default(中文简体)'
+    }
+  },
+  components: {
+    RegisterForm,
+    init () {
+      this.$i18n.locale = 'zh_CN'
+    }
+  },
+  methods: {
+    ...mapActions([
+      'register'
+    ]),
+    handleSubmit ({username, orgName}) {
+      this.register({username, orgName}).then(res => {
+        if (res.success === true) {
+          this.$Message.success(res.message)
+          this.$router.push({
+            name: 'home'
+          })
         } else {
-          this.$Message.success('Some elements will not change their language before page refreshing, do not affect usage effect.')
+          this.$Message.error(res.message)
         }
-        this.$emit('on-lang-change', name)
+      })
+    },
+    selectLang (name) {
+      this.title = this.langList[name]
+      this.languageType = this.localList[name]
+      this.$i18n.locale = name
+      if (name === 'zh_CN') {
+        this.$Message.success('部分元素需要页面刷新后改变语言，但不影响使用。')
+      } else if (name === 'ja_JP') {
+        this.$Message.success('部分元素需要页面刷新后改变语言，但不影响使用。')
+      } else {
+        this.$Message.success('Some elements will not change their language before page refreshing, do not affect usage effect.')
       }
+      this.$emit('on-lang-change', name)
     }
   }
+}
 </script>
 
 <style>

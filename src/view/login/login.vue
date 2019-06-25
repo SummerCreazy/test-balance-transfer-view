@@ -56,13 +56,13 @@ export default {
     handleSubmit ({ username, password, orgName }) {
       this.login({ username, password, orgName }).then(res => {
         console.log(res)
-         if (res.result === true) {
-            this.$router.push({
-              name: 'home'
-            })
-         } else {
-           this.$Message.error('login failed')
-         }
+        if (res.result === true) {
+          this.$router.push({
+            name: 'home'
+          })
+        } else {
+          this.$Message.error('login failed')
+        }
       })
     },
     selectLang (name) {

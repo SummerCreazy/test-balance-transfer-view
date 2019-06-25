@@ -72,11 +72,11 @@ export default {
   data () {
     return {
       simple: {
-        "channelName": "mychannel",
-        "chaincodeName": "mycc",
-        "peer": "peer1.org2.example.com",
-        "fcn": "query",
-        "args": ["b"]
+        'channelName': 'mychannel',
+        'chaincodeName': 'mycc',
+        'peer': 'peer1.org2.example.com',
+        'fcn': 'query',
+        'args': ['b']
       },
       modal: false,
       arg: '',
@@ -142,9 +142,9 @@ export default {
     handleAdd () {
       this.modal = true
     },
-    handleClose(event, name) {
-      const index = this.channelFrom.args.indexOf(name);
-      this.channelFrom.args.splice(index, 1);
+    handleClose (event, name) {
+      const index = this.channelFrom.args.indexOf(name)
+      this.channelFrom.args.splice(index, 1)
     },
     handleReset (name) {
       this.$refs[name].resetFields()
@@ -164,16 +164,13 @@ export default {
             if (res.result === true) {
               this.$Message.success('Build Success!')
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.result = res
-                // this.getAllCompanies()
               }, 1000)
             } else {
               this.$Message.error(res.message)
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.result = res

@@ -67,120 +67,117 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    data () {
-      return {
-        modal1: false,
-        peer: '',
-        simple: {
-          "chaincodeName":"mycc",
-          "chaincodePath":"github.com/example_cc/go",
-          "chaincodeType": "golang",
-          "chaincodeVersion":"v0",
-          "peers":["peer0.org1.example.com","peer1.org1.example.com"]
-        },
-        modal_loading: false,
-        hidden: true,
-        result: '',
-        channelFrom: {
-          chaincodePath: '',
-          chaincodeName: '',
-          chaincodeType: '',
-          chaincodeVersion: '',
-          peers: []
-        },
-        ruleValidate: {
-          chaincodePath: [
-            {
-              required: true,
-              message: '合约存放路径不能为空',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeName: [
-            {
-              required: true,
-              message: '合约名称不能为空',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeVersion: [
-            {
-              required: true,
-              message: '合约版本号不能为空',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeType: [
-            {
-              required: true,
-              message: '合约语言类型不能为空',
-              trigger: 'blur'
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      ...mapActions([
-        'install'
-      ]),
-      ok1 () {
-        this.channelFrom.peers.push(this.peer)
-        this.peer = ''
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      modal1: false,
+      peer: '',
+      simple: {
+        'chaincodeName': 'mycc',
+        'chaincodePath': 'github.com/example_cc/go',
+        'chaincodeType': 'golang',
+        'chaincodeVersion': 'v0',
+        'peers': ['peer0.org1.example.com', 'peer1.org1.example.com']
       },
-      cancel1 () {
-        this.peer = ''
+      modal_loading: false,
+      hidden: true,
+      result: '',
+      channelFrom: {
+        chaincodePath: '',
+        chaincodeName: '',
+        chaincodeType: '',
+        chaincodeVersion: '',
+        peers: []
       },
-      handleAdd1 () {
-        this.modal1 = true
-      },
-      handleClose1(event, name) {
-        const index = this.channelFrom.peers.indexOf(name);
-        this.channelFrom.peers.splice(index, 1);
-      },
-      handleReset (name) {
-        this.$refs[name].resetFields()
-      },
-      handleSubmit (name) {
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            this.modal_loading = true
-            var params = {}
-            params.chaincodePath = this.channelFrom.chaincodePath
-            params.chaincodeName = this.channelFrom.chaincodeName
-            params.chaincodeType = this.channelFrom.chaincodeType
-            params.chaincodeVersion = this.channelFrom.chaincodeVersion
-            params.peers = this.channelFrom.peers
-            this.install(params).then(res => {
-              console.log(res)
-              if (res.result === true) {
-                this.$Message.success('Build Success!')
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                  // this.getAllCompanies()
-                }, 1000)
-              } else {
-                this.$Message.error(res.message)
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                }, 1000)
-              }
-            })
-          } else {
-            this.$Message.error('Fail!')
+      ruleValidate: {
+        chaincodePath: [
+          {
+            required: true,
+            message: '合约存放路径不能为空',
+            trigger: 'blur'
           }
-        })
+        ],
+        chaincodeName: [
+          {
+            required: true,
+            message: '合约名称不能为空',
+            trigger: 'blur'
+          }
+        ],
+        chaincodeVersion: [
+          {
+            required: true,
+            message: '合约版本号不能为空',
+            trigger: 'blur'
+          }
+        ],
+        chaincodeType: [
+          {
+            required: true,
+            message: '合约语言类型不能为空',
+            trigger: 'blur'
+          }
+        ]
       }
     }
+  },
+  methods: {
+    ...mapActions([
+      'install'
+    ]),
+    ok1 () {
+      this.channelFrom.peers.push(this.peer)
+      this.peer = ''
+    },
+    cancel1 () {
+      this.peer = ''
+    },
+    handleAdd1 () {
+      this.modal1 = true
+    },
+    handleClose1 (event, name) {
+      const index = this.channelFrom.peers.indexOf(name)
+      this.channelFrom.peers.splice(index, 1)
+    },
+    handleReset (name) {
+      this.$refs[name].resetFields()
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.modal_loading = true
+          var params = {}
+          params.chaincodePath = this.channelFrom.chaincodePath
+          params.chaincodeName = this.channelFrom.chaincodeName
+          params.chaincodeType = this.channelFrom.chaincodeType
+          params.chaincodeVersion = this.channelFrom.chaincodeVersion
+          params.peers = this.channelFrom.peers
+          this.install(params).then(res => {
+            console.log(res)
+            if (res.result === true) {
+              this.$Message.success('Build Success!')
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            } else {
+              this.$Message.error(res.message)
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            }
+          })
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    }
   }
+}
 </script>
 
 <style>

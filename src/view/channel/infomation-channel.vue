@@ -51,8 +51,8 @@ export default {
       modal1: false,
       peer: '',
       simple: {
-        "channelName":"mychannel",
-        "peer":"peer0.org1.example.com"
+        'channelName': 'mychannel',
+        'peer': 'peer0.org1.example.com'
       },
       modal_loading: false,
       hidden: true,
@@ -86,26 +86,25 @@ export default {
     handleReset (name) {
       this.$refs[name].resetFields()
     },
-    findBuffer(obj) {
-      for(var k in obj){
-        if(k === 'type' && obj[k] === 'Buffer'){
+    findBuffer (obj) {
+      for (var k in obj) {
+        if (k === 'type' && obj[k] === 'Buffer') {
           return true
         }
       }
       return false
     },
-    bTs(obj){
-      for(var k in obj){
-        // console.log(typeof obj[k] )
-        if(typeof obj[k] === 'object'){
-          if(this.findBuffer(obj[k])) {
+    bTs (obj) {
+      for (var k in obj) {
+        if (typeof obj[k] === 'object') {
+          if (this.findBuffer(obj[k])) {
             let json = JSON.stringify(obj[k])
             console.log(json)
             console.log(JSON.parse(json))
-            let co = new Buffer(JSON.parse(json))
+            let co = Buffer.from(JSON.parse(json))
             console.log(co)
             obj[k] = co.toString('hex')
-          }else{
+          } else {
             this.bTs(obj[k])
           }
         }
@@ -123,17 +122,14 @@ export default {
             if (res.result === true) {
               this.$Message.success('Build Success!')
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.bTs(res)
                 this.result = res
-                // this.getAllCompanies()
               }, 1000)
             } else {
               this.$Message.error(res.message)
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.result = res

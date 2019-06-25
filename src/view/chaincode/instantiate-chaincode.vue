@@ -85,148 +85,145 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    data () {
-      return {
-        modal1: false,
-        peer: '',
-        simple: {
-          "channelName":"mychannel",
-          "chaincodeName":"mycc",
-          "chaincodeType": "golang",
-          "chaincodeVersion":"v0",
-          "peers":["peer0.org2.example.com","peer1.org1.example.com"],
-          "fcn": "",
-          "args":["a","100","b","200"]
-        },
-        modal: false,
-        arg: '',
-        modal_loading: false,
-        hidden: true,
-        result: '',
-        channelFrom: {
-          channelName: '',
-          chaincodeName: '',
-          chaincodeType: '',
-          chaincodeVersion: '',
-          peers: [],
-          fcn: '',
-          args: []
-        },
-        ruleValidate: {
-          channelName: [
-            {
-              required: true,
-              message: '通道名称不能为空',
-              trigger: 'blur'
-            },
-            {
-              type: 'string',
-              max: 50,
-              message: '不能超过50个字符',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeName: [
-            {
-              required: true,
-              message: '合约名称不能为空',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeVersion: [
-            {
-              required: true,
-              message: '合约版本号不能为空',
-              trigger: 'blur'
-            }
-          ],
-          chaincodeType: [
-            {
-              required: true,
-              message: '合约语言类型不能为空',
-              trigger: 'blur'
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      ...mapActions([
-        'instantiate'
-      ]),
-      ok () {
-        this.channelFrom.args.push(this.arg)
-        this.arg = ''
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      modal1: false,
+      peer: '',
+      simple: {
+        'channelName': 'mychannel',
+        'chaincodeName': 'mycc',
+        'chaincodeType': 'golang',
+        'chaincodeVersion': 'v0',
+        'peers': ['peer0.org2.example.com', 'peer1.org1.example.com'],
+        'fcn': '',
+        'args': ['a', '100', 'b', '200']
       },
-      cancel () {
-        this.arg = ''
+      modal: false,
+      arg: '',
+      modal_loading: false,
+      hidden: true,
+      result: '',
+      channelFrom: {
+        channelName: '',
+        chaincodeName: '',
+        chaincodeType: '',
+        chaincodeVersion: '',
+        peers: [],
+        fcn: '',
+        args: []
       },
-      handleAdd () {
-        this.modal = true
-      },
-      handleClose(event, name) {
-        const index = this.channelFrom.args.indexOf(name);
-        this.channelFrom.args.splice(index, 1);
-      },
-      ok1 () {
-        this.channelFrom.peers.push(this.peer)
-        this.peer = ''
-      },
-      cancel1 () {
-        this.peer = ''
-      },
-      handleAdd1 () {
-        this.modal1 = true
-      },
-      handleClose1(event, name) {
-        const index = this.channelFrom.peers.indexOf(name);
-        this.channelFrom.peers.splice(index, 1);
-      },
-      handleReset (name) {
-        this.$refs[name].resetFields()
-      },
-      handleSubmit (name) {
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            this.modal_loading = true
-            var params = {}
-            params.channelName = this.channelFrom.channelName
-            params.chaincodeName = this.channelFrom.chaincodeName
-            params.chaincodeType = this.channelFrom.chaincodeType
-            params.chaincodeVersion = this.channelFrom.chaincodeVersion
-            params.fcn = this.channelFrom.fcn
-            params.args = this.channelFrom.args
-            params.peers = this.channelFrom.peers
-            this.instantiate(params).then(res => {
-              console.log(res)
-              if (res.result === true) {
-                this.$Message.success('Build Success!')
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                  // this.getAllCompanies()
-                }, 1000)
-              } else {
-                this.$Message.error(res.message)
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                }, 1000)
-              }
-            })
-          } else {
-            this.$Message.error('Fail!')
+      ruleValidate: {
+        channelName: [
+          {
+            required: true,
+            message: '通道名称不能为空',
+            trigger: 'blur'
+          },
+          {
+            type: 'string',
+            max: 50,
+            message: '不能超过50个字符',
+            trigger: 'blur'
           }
-        })
+        ],
+        chaincodeName: [
+          {
+            required: true,
+            message: '合约名称不能为空',
+            trigger: 'blur'
+          }
+        ],
+        chaincodeVersion: [
+          {
+            required: true,
+            message: '合约版本号不能为空',
+            trigger: 'blur'
+          }
+        ],
+        chaincodeType: [
+          {
+            required: true,
+            message: '合约语言类型不能为空',
+            trigger: 'blur'
+          }
+        ]
       }
     }
+  },
+  methods: {
+    ...mapActions([
+      'instantiate'
+    ]),
+    ok () {
+      this.channelFrom.args.push(this.arg)
+      this.arg = ''
+    },
+    cancel () {
+      this.arg = ''
+    },
+    handleAdd () {
+      this.modal = true
+    },
+    handleClose (event, name) {
+      const index = this.channelFrom.args.indexOf(name)
+      this.channelFrom.args.splice(index, 1)
+    },
+    ok1 () {
+      this.channelFrom.peers.push(this.peer)
+      this.peer = ''
+    },
+    cancel1 () {
+      this.peer = ''
+    },
+    handleAdd1 () {
+      this.modal1 = true
+    },
+    handleClose1 (event, name) {
+      const index = this.channelFrom.peers.indexOf(name)
+      this.channelFrom.peers.splice(index, 1)
+    },
+    handleReset (name) {
+      this.$refs[name].resetFields()
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.modal_loading = true
+          var params = {}
+          params.channelName = this.channelFrom.channelName
+          params.chaincodeName = this.channelFrom.chaincodeName
+          params.chaincodeType = this.channelFrom.chaincodeType
+          params.chaincodeVersion = this.channelFrom.chaincodeVersion
+          params.fcn = this.channelFrom.fcn
+          params.args = this.channelFrom.args
+          params.peers = this.channelFrom.peers
+          this.instantiate(params).then(res => {
+            console.log(res)
+            if (res.result === true) {
+              this.$Message.success('Build Success!')
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            } else {
+              this.$Message.error(res.message)
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            }
+          })
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    }
   }
+}
 </script>
 
 <style>

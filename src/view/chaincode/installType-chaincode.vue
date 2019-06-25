@@ -39,73 +39,70 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    data () {
-      return {
-        simple: {
-          "peer": "peer1.org2.example.com"
-        },
-        modal: false,
-        arg: '',
-        modal_loading: false,
-        hidden: true,
-        result: '',
-        channelFrom: {
-          peer: ''
-        },
-        ruleValidate: {
-          peer: [
-            {
-              required: true,
-              message: '节点名称不能为空',
-              trigger: 'blur'
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      ...mapActions([
-        'installType'
-      ]),
-      handleReset (name) {
-        this.$refs[name].resetFields()
+import { mapActions } from 'vuex'
+export default {
+  data () {
+    return {
+      simple: {
+        'peer': 'peer1.org2.example.com'
       },
-      handleSubmit (name) {
-        this.$refs[name].validate(valid => {
-          if (valid) {
-            this.modal_loading = true
-            var params = {}
-            params.peer = this.channelFrom.peer
-            this.installType(params).then(res => {
-              console.log(res)
-              if (res.result === true) {
-                this.$Message.success('Build Success!')
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                  // this.getAllCompanies()
-                }, 1000)
-              } else {
-                this.$Message.error(res.message)
-                setTimeout(() => {
-                  // this.handleReset(name)
-                  this.modal_loading = false
-                  this.hidden = false
-                  this.result = res
-                }, 1000)
-              }
-            })
-          } else {
-            this.$Message.error('Fail!')
+      modal: false,
+      arg: '',
+      modal_loading: false,
+      hidden: true,
+      result: '',
+      channelFrom: {
+        peer: ''
+      },
+      ruleValidate: {
+        peer: [
+          {
+            required: true,
+            message: '节点名称不能为空',
+            trigger: 'blur'
           }
-        })
+        ]
       }
     }
+  },
+  methods: {
+    ...mapActions([
+      'installType'
+    ]),
+    handleReset (name) {
+      this.$refs[name].resetFields()
+    },
+    handleSubmit (name) {
+      this.$refs[name].validate(valid => {
+        if (valid) {
+          this.modal_loading = true
+          var params = {}
+          params.peer = this.channelFrom.peer
+          this.installType(params).then(res => {
+            console.log(res)
+            if (res.result === true) {
+              this.$Message.success('Build Success!')
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            } else {
+              this.$Message.error(res.message)
+              setTimeout(() => {
+                this.modal_loading = false
+                this.hidden = false
+                this.result = res
+              }, 1000)
+            }
+          })
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
+    }
   }
+}
 </script>
 
 <style>

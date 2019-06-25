@@ -51,8 +51,8 @@ export default {
       hidden: true,
       result: '',
       simple: {
-        "channelName":"mychannel",
-        "channelConfigPath":"../artifacts/channel/mychannel.tx"
+        'channelName': 'mychannel',
+        'channelConfigPath': '../artifacts/channel/mychannel.tx'
       },
       channelFrom: {
         channelName: '',
@@ -101,16 +101,13 @@ export default {
             if (res.success === true) {
               this.$Message.success('Build Success!')
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.result = res
-                // this.getAllCompanies()
               }, 1000)
             } else {
               this.$Message.error(res.message)
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.result = res
