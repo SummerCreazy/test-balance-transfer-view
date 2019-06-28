@@ -77,7 +77,7 @@ export default {
       return this.$store.state.user.avatorImgPath
     },
     userName () {
-      return this.$store.state.user.name
+      return this.$store.state.user.username
     },
     cacheList () {
       return []
@@ -138,7 +138,7 @@ export default {
     this.setLocal(this.$i18n.locale)
     // 文档提示
     this.$Notice.open({
-      title: '欢迎使用溯源平台管理系统',
+      title: '欢迎',
       duration: 5
     })
   }

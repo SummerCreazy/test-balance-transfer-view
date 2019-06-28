@@ -1,5 +1,5 @@
 /* eslint-disable standard/object-curly-even-spacing */
-import { createChannel, joinPeers, anchorPeers, invoke, query, byBlockNumber, byTransactionId, byHash, channelInfomation, peerHadJoin} from '@/api/channel'
+import { createChannel, joinPeers, anchorPeers, invoke, query, byBlockNumber, byTransactionId, byHash, channelInformation, peerHadJoin} from '@/api/channel'
 import { getToken } from '@/libs/util'
 
 export default {
@@ -128,9 +128,9 @@ export default {
         })
       })
     },
-    channelInfomation ({commit}, {peer, channelName}) {
+    channelInformation ({commit}, {peer, channelName}) {
       return new Promise((resolve, reject) => {
-        channelInfomation({
+        channelInformation({
           peer,
           channelName
         }).then(res => {

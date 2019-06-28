@@ -55,8 +55,7 @@ export default {
     ]),
     handleSubmit ({username, orgName}) {
       this.register({username, orgName}).then(res => {
-        if (res.success === true) {
-          this.$Message.success(res.message)
+        if (res.result === true) {
           this.$router.push({
             name: 'home'
           })

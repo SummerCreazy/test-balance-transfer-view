@@ -49,7 +49,7 @@
       </Form>
     </Card>
     <Card :hidden="hidden">
-      <Alert type="success" show-icon>
+      <Alert :type="type" show-icon>
         返回结果：
         <span slot="desc">
           <pre style="overflow: auto;background-color: lightblue">{{result}}</pre>
@@ -71,6 +71,7 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
+      type: 'success',
       modal1: false,
       peer: '',
       simple: {
@@ -160,6 +161,7 @@ export default {
               setTimeout(() => {
                 this.modal_loading = false
                 this.hidden = false
+                this.type = 'success'
                 this.result = res
               }, 1000)
             } else {
@@ -167,6 +169,7 @@ export default {
               setTimeout(() => {
                 this.modal_loading = false
                 this.hidden = false
+                this.type = 'error'
                 this.result = res
               }, 1000)
             }

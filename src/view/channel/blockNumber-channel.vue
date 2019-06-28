@@ -25,7 +25,7 @@
           </i-col>
           <i-col span="24">
             <FormItem label="区块高度" prop="blockId">
-              <InputNumber :min="1" v-model="channelFrom.blockId" style="width: 50%"></InputNumber>
+              <InputNumber :min="0" v-model="channelFrom.blockId" style="width: 50%"></InputNumber>
             </FormItem>
           </i-col>
           <i-col span="24">
@@ -38,7 +38,7 @@
       </Form>
     </Card>
     <Card :hidden="hidden">
-      <Alert type="success" show-icon>
+      <Alert :type="type" show-icon>
         返回结果：
         <span slot="desc">
           <pre style="overflow: auto;background-color: lightblue">{{result}}</pre>
@@ -53,6 +53,7 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
+      type: 'success',
       modal1: false,
       peer: '',
       simple: {
@@ -136,6 +137,7 @@ export default {
               setTimeout(() => {
                 this.modal_loading = false
                 this.hidden = false
+                this.type = 'success'
                 this.bTs(res)
                 this.result = res
               }, 1000)
@@ -144,6 +146,7 @@ export default {
               setTimeout(() => {
                 this.modal_loading = false
                 this.hidden = false
+                this.type = 'error'
                 this.result = res
               }, 1000)
             }

@@ -114,13 +114,13 @@ export const byHash = ({peer, hash, channelName}) => {
 }
 
 // Query for Channel Information
-export const channelInfomation = ({peer, channelName}) => {
+export const channelInformation = ({peer, channelName}) => {
   let data = {
     'peer': peer,
     'channelName': channelName
   }
   return axios.request({
-    url: '/channel/infomation',
+    url: '/channel/information',
     data,
     method: 'POST'
   })

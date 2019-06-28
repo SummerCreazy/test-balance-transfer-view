@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routers'
-import store from '@/store'
+// import store from '@/store'
 import iView from 'iview'
-import { getToken, canTurnTo } from '@/libs/util'
+import { getToken } from '@/libs/util'
 
 Vue.use(Router)
 const router = new Router({
@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   const token = getToken()
   if (!token && to.name === REGISTER_PAGE_NAME) {
-    // 未登录且要跳转的页面不是登录页
+    // 未登录且要跳转的页面是注册页
     next()
   } else if (!token && to.name !== LOGIN_PAGE_NAME) {
     // 未登录且要跳转的页面不是登录页
@@ -30,9 +30,11 @@ router.beforeEach((to, from, next) => {
   } else if (token && to.name === LOGIN_PAGE_NAME) {
     // 已登录且要跳转的页面是登录页
     next({
-      name: 'home' // 跳转到home页
+      name: LOGIN_PAGE_NAME // 跳转到home页
     })
-  } else {
+  } else if (token && to.name !== LOGIN_PAGE_NAME) {
+    // 已登录且要跳转的不是登录页
+    next()
     // store.dispatch('getUserInfo').then(user => {
     //   // 拉取用户信息，通过用户权限和跳转的页面的name来判断是否有权限访问;access必须是一个数组，如：['super_admin'] ['super_admin', 'admin']
     //   if (user !== null && user !== undefined) {
@@ -42,7 +44,10 @@ router.beforeEach((to, from, next) => {
     //     next({name: LOGIN_PAGE_NAME})
     //   }
     // })
-    next()
+  } else {
+    next({
+      name: LOGIN_PAGE_NAME
+    })
   }
 })
 

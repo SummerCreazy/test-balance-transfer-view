@@ -2,7 +2,7 @@
   <div>
     <Card>
       <Alert show-icon>
-        该接口是查询节点所加入的通道, 所查的节点必须是登录用户所在的组织下
+        该接口是根据当前登录用户所在节点的组织下的某个节点名称查询该组织下所有的节点信息
       </Alert>
       <Alert show-icon>
         <Icon type="ios-bulb-outline" slot="icon"></Icon>
@@ -53,7 +53,9 @@ export default {
       hidden: true,
       result: '',
       channelFrom: {
-        peer: ''
+        channelName: '',
+        peer: '',
+        hash: ''
       },
       ruleValidate: {
         peer: [
@@ -68,7 +70,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'peerHadJoin'
+      'getPeers'
     ]),
     handleReset (name) {
       this.$refs[name].resetFields()
@@ -79,7 +81,7 @@ export default {
           this.modal_loading = true
           var params = {}
           params.peer = this.channelFrom.peer
-          this.peerHadJoin(params).then(res => {
+          this.getPeers(params).then(res => {
             console.log(res)
             if (res.result === true) {
               this.$Message.success('Build Success!')
@@ -92,7 +94,6 @@ export default {
             } else {
               this.$Message.error(res.message)
               setTimeout(() => {
-                // this.handleReset(name)
                 this.modal_loading = false
                 this.hidden = false
                 this.type = 'error'

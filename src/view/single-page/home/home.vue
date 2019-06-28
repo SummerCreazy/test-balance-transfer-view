@@ -1,352 +1,284 @@
 <template>
   <div>
-    <Row :gutter="20">
-      <i-col :xs="8" :sm="8" :md="8" :lg="8" span="8" v-for="(infor, i) in inforCardData1" :key="`infor-${i}`" style="height: 120px;color:#666666;">
-        <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
-          <count-to :end="infor.count" count-class="count-style"/>
-          <p>{{ infor.title }}</p>
-        </infor-card>
-      </i-col>
-    </Row>
-    <br/>
-    <Row :gutter="20">
-      <i-col :xs="8" :sm="8" :md="8" :lg="8" span="8" v-for="(infor, i) in inforCardData2" :key="`infor-${i}`" style="height: 120px;color:#666666;">
-        <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
-          <count-to :end="infor.count" count-class="count-style"/>
-          <p>{{ infor.title }}</p>
-        </infor-card>
-      </i-col>
-    </Row>
-    <Row :gutter="20" style="margin-top: 20px;">
-      <i-col :xs="12" :sm="12" :md="12" :lg="12" span="12">
-        <Card shadow style="width: 100%">
-          <!--<p slot="title">-->
-            <!--各产品本季度出货量百分比-->
-          <!--</p>-->
-          <div id="pie" style="height: 300px;width: 470px;"></div>
+    <Card style="width:100%">
+      <div style="text-align:left">
+        <h5>当前Hyperledger Fabric网络配置</h5>
+      </div>
+    </Card>
+    <Row :gutter="16" style="margin-top: 16px;margin-bottom: 16px">
+      <i-col span="8" class="card">
+        <Card>
+          <div style="text-align:left">
+            <h4>组织总数</h4>
+            <h3>{{orgNumber}}</h3>
+            <h5>即当前网络的 org 数量</h5>
+          </div>
         </Card>
       </i-col>
-      <i-col :xs="12" :sm="12" :md="12" :lg="12" span="12">
-        <Card shadow style="width: 100%;">
-          <div id="bar" style="height: 300px;width: 470px;"></div>
+      <i-col span="8" class="card">
+        <Card>
+          <div style="text-align:left">
+            <h4>排序服务总数</h4>
+            <h3>{{ordererNumber}}</h3>
+            <h5>即当前网络的 orderer 数量</h5>
+          </div>
         </Card>
       </i-col>
-      <br />
-      <br />
-    </Row>
-    <Row :gutter="20" style="margin-top: 20px;">
-      <i-col :xs="24" :sm="24" :md="24" :lg="24" span="24">
-        <Card shadow>
-          <Row>
-            <i-col :xs="4" :sm="4" :md="4" :lg="4" span="4" style="padding-top: 5px;">
-              <h4>{{$t('i18n_home_select_year')}}</h4>
-            </i-col>
-            <i-col  :xs="4" :sm="4" :md="4" :lg="4"  span="4" style="padding-right:10px">
-              <Select v-model="years" >
-                <Option v-for="item in year" :value="item" :key="item">{{ item }}</Option>
-              </Select>
-            </i-col>
-            <i-col  :xs="4" :sm="4" :md="4" :lg="4" span="4" offset="7" style="padding-top: 5px;">
-              <h4>{{$t('i18n_home_select_product')}}</h4>
-            </i-col>
-            <i-col  :xs="4" :sm="4" :md="4" :lg="4" span="4" style="padding-right:10px">
-              <Select v-model="products" >
-                <Option v-for="item in product" :value="item.value" :key="item.value">{{ item.label }}</Option>
-              </Select>
-            </i-col>
-          </Row>
-          <br />
-          <Row>
-            <i-col  :xs="24" :sm="24" :md="24" :lg="24" span="24">
-              <div id="bar2" style="height: 400px;width: 990px;"></div>
-            </i-col>
-          </Row>
+      <i-col span="8" class="card">
+        <Card>
+          <div style="text-align:left">
+            <h4>节点服务总数</h4>
+            <h3>{{peerNumber}}</h3>
+            <h5>即当前网络的 peer 数量</h5>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="8" class="card">
+        <Card>
+          <div style="text-align:left">
+            <h4>证书节点服务总数</h4>
+            <h3>{{caNumber}}</h3>
+            <h5>即当前网络的 ca server 数量</h5>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="8" class="card">
+        <Card>
+          <div style="text-align:left">
+            <h4>通道总数</h4>
+            <h3>{{channelNumber}}</h3>
+            <h5>即当前网络的 channel 数量</h5>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="8" class="card">
+        <Card>
+          <div style="text-align:left">
+            <h4>合约总数</h4>
+            <h3>{{chaincodeNumber}}</h3>
+            <h5>即当前网络的 chaincode 数量</h5>
+          </div>
+        </Card>
+      </i-col>
+      <i-col span="16" class="card">
+        <div style="text-align: center;background-color: ghostwhite">
+          <Table stripe :columns="columns" :data="blocks"></Table>
+          <Page size='small' style="font-size:10px;margin-top: 13px" :total="pageTotal" :current="pageNum" :page-size="pageSize" :page-size-opts="[5]" show-elevator show-sizer show-total
+                placement="top" @on-change="handlePage" @on-page-size-change="handlePageSize" />
+        </div>
+      </i-col>
+      <i-col span="8" class="card">
+        <Card>
+          <h3>系统信息</h3>
+          系统类型：
+          <h5>{{sysName}}</h5>
+          cpu架构：
+          <h5>{{arch}}</h5>
+          内存使用率：
+          <Progress :percent="mem"  stroke-color="#5cadff" />
+          cpu使用率：
+          <Progress :percent="cpu"  stroke-color="#2b85e4"/>
+          磁盘使用率：
+          <Progress :percent="disk"  stroke-color="#ff9900"/>
+          网络使用率：
+          <Progress :percent="internet"  stroke-color="#00CC33"/>
         </Card>
       </i-col>
     </Row>
-    <br />
   </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
-import InforCard from '_c/info-card'
-import CountTo from '_c/count-to'
-import ICol from 'iview/src/components/grid/col'
+let moment = require('moment')
 export default {
-  name: 'home',
-  components: {
-    ICol,
-    InforCard,
-    CountTo
-  },
   data () {
     return {
-      year: this.getYear(),
-      products: '',
-      years: '',
-      product: [
+      sysName: '',
+      arch: '',
+      mem: 0,
+      cpu: 0,
+      disk: 90,
+      internet: 40,
+      pageTotal: 0,
+      pageNum: 1,
+      pageSize: 5,
+      channelName: 'mychannel',
+      peer: 'peer0.org1.example.com',
+      block: {
+        number: '',
+        previous_hash: '',
+        timestamp: '',
+        creator: ''
+      },
+      chaincodeNumber: 0,
+      channelNumber: 0,
+      caNumber: 0,
+      peerNumber: 0,
+      ordererNumber: 0,
+      orgNumber: 0,
+      columns: [
         {
-          label: '南汇苹果',
-          value: '001'
+          title: '区块高度',
+          key: 'number',
+          width: 90
         },
         {
-          label: '南汇葡萄',
-          value: '002'
+          title: '前一块hash',
+          key: 'previous_hash',
+          align: 'center',
+          width: 300
         },
         {
-          label: '普陀大虾',
-          value: '003'
+          title: '时间戳',
+          key: 'timestamp',
+          align: 'center'
+        },
+        {
+          title: '创建者',
+          key: 'creator',
+          align: 'center',
+          width: 100
         }
       ],
-      inforCardData1: [
-        { title: '今日访客', icon: 'ios-egg', count: 80, color: '#6666CC' },
-        { title: '新增用户', icon: 'ios-person-add', count: 21, color: '#66CC66' },
-        { title: '企业入驻', icon: 'ios-podium', count: 142, color: '#CCFF66' }
-      ],
-      inforCardData2: [
-        { title: '平台用户', icon: 'ios-person', count: 657, color: '#FF6666' },
-        { title: '平台访问', icon: 'ios-people', count: 1023, color: '#FFCC99' },
-        { title: '平台产品', icon: 'ios-star', count: 14, color: '#FFFF99' }
-      ],
-      barData: {
-        Mon: 40,
-        Tue: 50,
-        Wed: 70,
-        Thu: 80,
-        Fri: 50,
-        Sat: 40,
-        Sun: 20
-      },
-      pieData: [
-        {value: 335, name: '南汇水蜜桃'},
-        {value: 225, name: '南汇大虾'},
-        {value: 234, name: '普陀小青龙'},
-        {value: 135, name: '浦东青蟹'},
-        {value: 120, name: '普陀青提'}
-      ]
-    }
-  },
-  methods: {
-    ...mapActions([
-      'getHomeData'
-    ]),
-    getYear: function () {
-      let arr = []
-      for (var i = 1990; i < 2200; i++) {
-        arr.push(i)
-      }
-      return arr
-    },
-    getOverviewData: function () {
-      this.drawPie()
-      this.drawBar(this.$data.barData)
-      this.drawBar2()
-    },
-    drawPie: function () {
-      let charts = this.$echarts.init(document.getElementById('pie'))
-      charts.on('click', this.eConsole)
-      charts.setOption({
-        color: ['#99FFCC', '#CCFFCC', '#FF99CC', '#FFCCCC', '#99CCFF'],
-        title: {
-          text: this.$t('i18n_home_percentage_of_each_product_shipped_this_quarter'),
-          x: 'center'
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        },
-        legend: {
-          show: false,
-          orient: 'vertical',
-          x: 'left',
-          top: '30%',
-          data: ['南汇水蜜桃', '南汇大虾', '普陀小青龙', '浦东青蟹', '普陀青提']
-        },
-        series: [
-          {
-            name: this.$t('i18n_home_name_of_products'),
-            type: 'pie',
-            center: ['50%', '50%'],
-            radius: ['30%', '50%'],
-            avoidLabelOverlap: false,
-            label: {
-              normal: {
-                show: true,
-                position: 'outside'
-              },
-              emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: '14',
-                  fontWeight: 'bold'
-                }
-              }
-            },
-            labelLine: {
-              normal: {
-                show: true
-              }
-            },
-            data: this.$data.pieData,
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
-      })
-    },
-    drawBar: function (dataes) {
-      let charts = this.$echarts.init(document.getElementById('bar'))
-      let seriesData = Object.values(dataes)
-      charts.setOption({
-        color: ['#669999'],
-        title: {
-          text: this.$t('i18n_home_user_scan_statistics_this_week'),
-          x: 'center'
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'line'
-          }
-        },
-        legend: {
-          show: true,
-          orient: 'vertical',
-          left: '5%',
-          top: '10%',
-          data: [this.$t('i18n_home_scan_times')]
-        },
-        grid: {
-          left: '1%',
-          right: '2%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            axisTick: {
-              alignWithLabel: true
-            }
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value'
-          }
-        ],
-        series: [
-          {
-            name: this.$t('i18n_home_scan_times'),
-            type: 'bar',
-            barWidth: '60%',
-            data: seriesData
-          }
-        ]
-      })
-    },
-    drawBar2: function () {
-      let charts = this.$echarts.init(document.getElementById('bar2'))
-      charts.setOption({
-        color: ['#9966FF', '#6699FF'],
-        title: {
-          text: this.$t('i18n_home_annual_product_data_display'),
-          x: 'center'
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999'
-            }
-          }
-        },
-        toolbox: {
-          top: '1%',
-          right: '5%',
-          fontSize: '12',
-          feature: {
-            dataView: {show: true, readOnly: false},
-            magicType: {show: true, type: ['line', 'bar']},
-            restore: {show: true},
-            saveAsImage: {show: true}
-          }
-        },
-        legend: {
-          top: '2%',
-          fontSize: '12',
-          data: [this.$t('i18n_home_shipments'), this.$t('i18n_home_scan_number')],
-          left: '5%'
-        },
-        xAxis: [
-          {
-            type: 'category',
-            data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-            axisPointer: {
-              type: 'shadow'
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: '#9999FF'
-              }
-            }
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value',
-            name: this.$t('i18n_home_box_number'),
-            nameGap: '20',
-            splitNumber: 10,
-            minInterval: 100,
-            maxInterval: 1000,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: '#9999FF'
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              show: true,
-              margin: 1,
-              fontSize: 12
-            }
-          }
-        ],
-        series: [
-          {
-            name: this.$t('i18n_home_shipments'),
-            type: 'bar',
-            data: [300, 400, 300, 200, 100, 700, 800, 900, 200, 300, 500, 200]
-          },
-          {
-            name: this.$t('i18n_home_scan_number'),
-            type: 'bar',
-            data: [100, 200, 500, 200, 300, 600, 900, 1000, 1400, 300, 300, 200]
-          }
-        ]
-      })
+      blocks: []
     }
   },
   mounted () {
-    this.getOverviewData()
+    this.getBlockTab(this.channelName, this.peer)
+    this.getNetConfigSetting()
+    this.getSys()
+  },
+  methods: {
+    ...mapActions([
+      'getNetConfig',
+      'channelInformation',
+      'byBlockNumber',
+      'getSystemMessage'
+    ]),
+    getSys () {
+      this.getSystemMessage().then(res => {
+        if (res.result === true) {
+          this.cpu = res.data.cpu * 100
+          this.arch = res.data.arch
+          this.mem = (res.data.totalMem - res.data.freeMem) / res.data.totalMem * 100
+          this.sysName = res.data.sysName
+        }
+      })
+    },
+    getNetConfigSetting: function () {
+      this.getNetConfig().then(res => {
+        if (res.result === true) {
+          this.chaincodeNumber = this.getChaincodeNum(res.data.channels)
+          this.channelNumber = this.getJsonLength(res.data.channels)
+          this.caNumber = this.getJsonLength(res.data.certificateAuthorities)
+          this.peerNumber = this.getJsonLength(res.data.peers)
+          this.ordererNumber = this.getJsonLength(res.data.orderers)
+          this.orgNumber = this.getJsonLength(res.data.organizations)
+        }
+      })
+      this.channelInformation({peer: this.peer, channelName: this.channelName}).then(res => {
+        console.log(res)
+        if (res.result === true) {
+          this.pageTotal = res.data.height.low
+          this.getBlockTab(this.channelName, this.peer, res.data.height.low)
+        }
+      })
+    },
+    getJsonLength (obj) {
+      let i = 0
+      for (var k in obj) {
+        if (k !== '' && obj[k] !== null) {
+          i++
+        }
+      }
+      return i
+    },
+    getChaincodeNum (obj) {
+      let i = 0
+      for (var k in obj) {
+        i = i + obj[k].chaincodes.length
+      }
+      return i
+    },
+    handlePage (value) {
+      this.pageNum = value
+      this.getBlockTab(this.channelName, this.peer, this.pageTotal)
+    },
+    handlePageSize (value) {
+      this.pageSize = value
+      this.getBlockTab(this.channelName, this.peer, this.pageTotal)
+    },
+    getBlockTab (channelName, peer, total) {
+      console.log(total)
+      var blocks = []
+      if (this.pageNum === 1) {
+        if (total <= this.pageSize) {
+          for (let i = this.pageTotal; i > 1; i--) {
+            blocks.push(this.getBlock(peer, i - 1, channelName))
+          }
+          for (let j = 0; j <= this.pageSize - this.pageTotal; j++) {
+            blocks.push(this.block)
+          }
+        } else if (total > this.pageSize) {
+          for (let i = total; i > total - this.pageSize; i--) {
+            blocks.push(this.getBlock(peer, i - 1, channelName))
+          }
+        }
+      } else {
+        let start = total - this.pageSize * (this.pageNum - 1)
+        let end = start - this.pageSize
+        if (end <= 0) {
+          end = 1
+        }
+        for (let i = start; i > end; i--) {
+          blocks.push(this.getBlock(peer, i - 1, channelName))
+        }
+        for (let j = 0; j <= this.pageSize - start; j++) {
+          blocks.push(this.block)
+        }
+      }
+      this.blocks = blocks
+    },
+    findBlocks (channelName, peer) {
+      var total = 0
+      var params = {}
+      params.channelName = channelName
+      params.peer = peer
+      params.blockId = 2
+      this.channelInfomation(params).then(res => {
+        if (res.resolve === true) {
+          total = res.data.height.low
+        }
+      })
+      this.pageTotal = total
+      this.getBlockTab(channelName, peer, total)
+    },
+    getBlock (peer, number, channelName) {
+      let block = {
+        number: 0,
+        previous_hash: '',
+        timestamp: '',
+        creator: ''
+      }
+      this.byBlockNumber({peer: peer, blockId: number, channelName: channelName}).then(res => {
+        if (res.result === true) {
+          block.number = res.data.header.number
+          block.previous_hash = res.data.header.previous_hash
+          block.timestamp = moment(res.data.data.data[0].payload.header.timestamp).format('YYYY-MM-DD hh:mm:ss')
+          block.creator = res.data.data.data[0].payload.header.signature_header.creator.Mspid
+        } else {
+          block = null
+        }
+      })
+      return block
+    }
   }
 }
 </script>
 
 <style lang="less">
-  .count-style{
-    font-size: 50px;
+  .card{
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 </style>

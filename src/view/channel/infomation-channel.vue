@@ -33,7 +33,7 @@
       </Form>
     </Card>
     <Card :hidden="hidden">
-      <Alert type="success" show-icon>
+      <Alert :type="error" show-icon>
         返回结果：
         <span slot="desc">
           <pre style="overflow: auto;background-color: lightblue">{{result}}</pre>
@@ -48,6 +48,7 @@ import { mapActions } from 'vuex'
 export default {
   data () {
     return {
+      type: 'success',
       modal1: false,
       peer: '',
       simple: {
@@ -81,7 +82,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'channelInfomation'
+      'channelInformation'
     ]),
     handleReset (name) {
       this.$refs[name].resetFields()
@@ -117,13 +118,14 @@ export default {
           var params = {}
           params.channelName = this.channelFrom.channelName
           params.peer = this.channelFrom.peer
-          this.channelInfomation(params).then(res => {
+          this.channelInformation(params).then(res => {
             console.log(res)
             if (res.result === true) {
               this.$Message.success('Build Success!')
               setTimeout(() => {
                 this.modal_loading = false
                 this.hidden = false
+                this.type = 'success'
                 this.bTs(res)
                 this.result = res
               }, 1000)
@@ -132,6 +134,7 @@ export default {
               setTimeout(() => {
                 this.modal_loading = false
                 this.hidden = false
+                this.type = 'error'
                 this.result = res
               }, 1000)
             }

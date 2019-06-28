@@ -38,6 +38,7 @@ module.exports = {
     proxy: {
       '/manager': {
         // target: '/tracemg/',
+        // target: 'http://120.77.244.64:4000/',
         target: 'http://localhost:4000/',
         changeOrigin: true,
         ws: true,

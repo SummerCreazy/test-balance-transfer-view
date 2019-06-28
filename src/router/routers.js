@@ -32,7 +32,6 @@ export default [
   },
   {
     path: '/',
-    name: '首页',
     redirect: '/home',
     component: Main,
     meta: {
@@ -208,6 +207,42 @@ export default [
           notCache: true
         },
         component: () => import('@/view/chaincode/installType-chaincode.vue')
+      }
+    ]
+  },
+  {
+    path: '/client',
+    name: '客户端',
+    meta: {
+      type: 'menu',
+      notCache: true,
+      hideInMenu: false,
+      icon: 'md-key',
+      title: '客户端'
+    },
+    component: Main,
+    children: [
+      {
+        path: '/peers',
+        name: '查询节点',
+        meta: {
+          icon: 'md-contacts',
+          title: '查询节点',
+          hideInMenu: false,
+          notCache: true
+        },
+        component: () => import('@/view/client/getPeers-client.vue')
+      },
+      {
+        path: '/netConfig',
+        name: '网络配置',
+        meta: {
+          icon: 'md-person',
+          title: '网络配置',
+          hideInMenu: false,
+          notCache: true
+        },
+        component: () => import('@/view/client/getNetConfig-client.vue')
       }
     ]
   }

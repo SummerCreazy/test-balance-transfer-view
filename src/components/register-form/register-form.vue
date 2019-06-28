@@ -65,7 +65,7 @@ export default {
         if (valid) {
           this.$emit('on-success-valid', {
             username: this.form.username,
-            orgName: this.form.orgNameRules
+            orgName: this.form.orgName
           })
         }
       })

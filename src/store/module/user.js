@@ -32,7 +32,6 @@ export default {
         }).then(res => {
           if (res.result === true) {
             let data = res
-            console.log(data)
             localStorage.setItem('auth_info', data.data.user.username)
             commit('setToken', data.token)
             commit('setUsername', data.data.user.username)
@@ -53,9 +52,10 @@ export default {
         }).then(res => {
           if (res.result === true) {
             let data = res
-            localStorage.setItem('auth_info', data.data.user.username)
-            commit('setUsername', data.data.user.username)
-            commit('setToken', data.token)
+            console.log(res)
+            localStorage.setItem('auth_info', data.data.data.username)
+            commit('setUsername', data.data.data.username)
+            commit('setToken', data.data.token)
           }
           resolve(res)
         }).catch(err => {
